@@ -18,7 +18,6 @@ public class ExceptionControllerAdvice {
 	
 	@ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
 	public ResponseEntity<ErrorInfo> validatorExceptionHandler(Exception exception) {
-		System.out.println("validatorExceptionHandler");
 		var msg = "";
 		if(exception instanceof MethodArgumentNotValidException mEx) {
 			msg = mEx.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(", "));
@@ -33,7 +32,6 @@ public class ExceptionControllerAdvice {
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorInfo> generalException(Exception exception) {
-		System.out.println("generalException");
 		var error = new ErrorInfo(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value(), LocalDateTime.now());
 		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
