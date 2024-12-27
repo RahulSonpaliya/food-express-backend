@@ -1,6 +1,7 @@
 package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.UserDTO;
@@ -14,9 +15,13 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public UserDTO registerUser(UserDTO userDTO) throws JobPortalException {
 		userDTO.setId(Utilities.getNextSequence("users"));
+		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		var user = userRepository.save(userDTO.toEntity());
 		return user.toDTO();
 	}
