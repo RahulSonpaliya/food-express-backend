@@ -4,6 +4,7 @@ import com.example.entity.User;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class UserDTO {
 	@NotBlank(message = "{user.password.required}")
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%?&])[A-Za-z\\d@$!%?&]{8,15}$", message = "{user.password.invalid}")
 	private String password;
+	@NotNull(message = "{user.accountType.required}")
 	private AccountType accountType;
 	
 	public User toEntity() {
