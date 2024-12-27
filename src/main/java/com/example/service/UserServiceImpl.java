@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.dto.LoginDTO;
 import com.example.dto.UserDTO;
 import com.example.exception.JobPortalException;
 import com.example.repository.UserRepository;
@@ -27,6 +28,15 @@ public class UserServiceImpl implements UserService {
 		userDTO.setId(Utilities.getNextSequence("users"));
 		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		var user = userRepository.save(userDTO.toEntity());
+		return user.toDTO();
+	}
+
+	@Override
+	public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException {
+		var user = userRepository.findByEmailAndAccountType(loginDTO.getEmail(), loginDTO.getAccountType()).orElseThrow(() -> new JobPortalException("INVALID_CREDENTIALS"));
+		if(!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+			throw new JobPortalException("INVALID_CREDENTIALS");
+		}
 		return user.toDTO();
 	}
 

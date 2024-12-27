@@ -2,7 +2,6 @@ package com.example.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.LoginDTO;
 import com.example.dto.UserDTO;
 import com.example.exception.JobPortalException;
 import com.example.service.UserService;
@@ -30,6 +30,12 @@ public class UserApi {
 	public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO userDTO) throws JobPortalException {
 		var userDto = userService.registerUser(userDTO);
 		return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<UserDTO> loginUser(@RequestBody @Valid LoginDTO loginDTO) throws JobPortalException {
+		var userDto = userService.loginUser(loginDTO);
+		return new ResponseEntity<>(userDto, HttpStatus.OK);
 	}
 	
 }
