@@ -15,16 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "users")
-@CompoundIndex(name = "email_accountType_idx", def = "{'email': 1, 'accountType': 1}", unique = true)
+@CompoundIndex(name = "phoneNumber_accountType_idx", def = "{'phoneNumber': 1, 'accountType': 1}", unique = true)
 public class User {
 	@Id
 	private Long id;
-	private String name;
-	private String email;
+	private String countryCode;
+	private String phoneNumber;
 	private String password;
 	private AccountType accountType;
 	
 	public UserDTO toDTO() {
-		return new UserDTO(this.id, this.name, this.email, this.password, this.accountType);
+		return new UserDTO(this.id, this.countryCode, this.phoneNumber, this.password, this.accountType);
 	}
 }

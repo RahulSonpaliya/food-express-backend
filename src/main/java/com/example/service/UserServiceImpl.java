@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserDTO registerUser(UserDTO userDTO) throws JobPortalException {
-		var user1 = userRepository.findByEmailAndAccountType(userDTO.getEmail(), userDTO.getAccountType());
+		var user1 = userRepository.findByCountryCodeAndPhoneNumberAndAccountType(userDTO.getCountryCode(), userDTO.getPhoneNumber(), userDTO.getAccountType());
 		if(user1.isPresent()) {
 			throw new JobPortalException("USER_FOUND");
 		}
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException {
-		var user = userRepository.findByEmailAndAccountType(loginDTO.getEmail(), loginDTO.getAccountType()).orElseThrow(() -> new JobPortalException("INVALID_CREDENTIALS"));
+		var user = userRepository.findByCountryCodeAndPhoneNumberAndAccountType(loginDTO.getCountryCode(), loginDTO.getPhoneNumber(), loginDTO.getAccountType()).orElseThrow(() -> new JobPortalException("INVALID_CREDENTIALS"));
 		if(!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
 			throw new JobPortalException("INVALID_CREDENTIALS");
 		}

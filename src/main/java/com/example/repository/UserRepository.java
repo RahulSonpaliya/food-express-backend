@@ -10,5 +10,5 @@ import com.example.entity.User;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, Long> {
-	public Optional<User> findByEmailAndAccountType(String email, AccountType accountType);
+	public Optional<User> findByCountryCodeAndPhoneNumberAndAccountType(String countryCode, String phoneNumber, AccountType accountType);
 }
