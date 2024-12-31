@@ -1,31 +1,31 @@
 package com.example.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.model.request.RegisterUserRequest;
+import com.example.repository.AppRegionRepository;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.example.dto.UserDTO;
-import com.example.repository.AppRegionRepository;
-
-public class PhoneValidator implements ConstraintValidator<ValidPhone, UserDTO> {
+public class PhoneValidator implements ConstraintValidator<ValidPhone, RegisterUserRequest> {
 
 	@Autowired
 	private AppRegionRepository appRegionRepository;
 	
     @Override
-    public boolean isValid(UserDTO userDTO, ConstraintValidatorContext context) {
-        if (userDTO.getCountryCode() == null || userDTO.getPhoneNumber() == null) {
+    public boolean isValid(RegisterUserRequest request, ConstraintValidatorContext context) {
+        if (request.getCountryCode() == null || request.getPhoneNumber() == null) {
             return false;
         }
         
-        var appRegion = appRegionRepository.findByCalling(userDTO.getCountryCode());
+        var appRegion = appRegionRepository.findByCalling(request.getCountryCode());
         if(!appRegion.isPresent()) {
         	return false;
         }
 
         // Example logic: Concatenate country code and phone number and validate
-        String fullPhoneNumber = userDTO.getCountryCode() + userDTO.getPhoneNumber();
+        String fullPhoneNumber = request.getCountryCode() + request.getPhoneNumber();
         return fullPhoneNumber.matches("^\\+?[1-9][0-9]{5,15}$");
     }
 }

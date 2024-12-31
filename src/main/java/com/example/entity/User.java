@@ -4,8 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.example.dto.AccountType;
-import com.example.dto.UserDTO;
+import com.example.model.AccountType;
+import com.example.model.UserDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +21,10 @@ public class User {
 	private Long id;
 	private String countryCode;
 	private String phoneNumber;
-	private String password;
 	private AccountType accountType;
+	private boolean otpVerified;
 	
 	public UserDTO toDTO() {
-		return new UserDTO(this.id, this.countryCode, this.phoneNumber, this.password, this.accountType);
+		return new UserDTO(this.id, this.countryCode, this.phoneNumber, this.accountType, this.otpVerified);
 	}
 }
