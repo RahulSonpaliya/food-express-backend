@@ -1,5 +1,7 @@
 package com.example.utility;
 
+import java.security.SecureRandom;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -15,12 +17,12 @@ import com.example.exception.JobPortalException;
 public class Utilities {
 
 	private static MongoOperations mongoOperations;
-	
+
 	@Autowired
 	public void setMongoOperations(MongoOperations mongoOperations) {
 		Utilities.mongoOperations = mongoOperations;
 	}
-	
+
 	public static Long getNextSequence(String key) throws JobPortalException {
 		var query = new Query(Criteria.where("_id").is(key));
 		var update = new Update();
@@ -28,10 +30,18 @@ public class Utilities {
 		var options = new FindAndModifyOptions();
 		options.returnNew(true);
 		var seq = mongoOperations.findAndModify(query, update, options, Sequence.class);
-		if(seq == null) {
+		if (seq == null) {
 			throw new JobPortalException("Unable to get sequence id for key : " + key);
 		}
 		return seq.getSeq();
 	}
-	
+
+	public static String generateOTP() {
+		StringBuilder otp = new StringBuilder();
+		SecureRandom random = new SecureRandom();
+		for (int i = 0; i < 6; i++) {
+			otp.append(random.nextInt(10));
+		}
+		return otp.toString();
+	}
 }

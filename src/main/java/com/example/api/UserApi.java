@@ -14,6 +14,9 @@ import com.example.exception.JobPortalException;
 import com.example.model.LoginDTO;
 import com.example.model.UserDTO;
 import com.example.model.request.RegisterUserRequest;
+import com.example.model.request.SendOtpRequest;
+import com.example.model.request.VerifyOtpRequest;
+import com.example.model.response.BaseResponse;
 import com.example.model.response.RegisterUserResponse;
 import com.example.service.UserService;
 
@@ -30,6 +33,9 @@ public class UserApi {
 	
 	@PostMapping("/register")
 	public ResponseEntity<RegisterUserResponse> registerUser(@RequestBody @Valid RegisterUserRequest request) throws JobPortalException {
+		userService.registerUser(request);
+		var sendOtpRequest = new SendOtpRequest(request.getCountryCode(), request.getPhoneNumber(), request.getAccountType());
+		userService.sendOtp(sendOtpRequest);
 		return new ResponseEntity<>(userService.registerUser(request), HttpStatus.CREATED);
 	}
 	
@@ -37,6 +43,11 @@ public class UserApi {
 	public ResponseEntity<UserDTO> loginUser(@RequestBody @Valid LoginDTO loginDTO) throws JobPortalException {
 		var userDto = userService.loginUser(loginDTO);
 		return new ResponseEntity<>(userDto, HttpStatus.OK);
+	}
+	
+	@PostMapping("/verifyOtp")
+	public ResponseEntity<BaseResponse> verifyOtp(@RequestBody @Valid VerifyOtpRequest request) throws JobPortalException {
+		return new ResponseEntity<>(userService.verifyOtp(request), HttpStatus.OK);
 	}
 	
 }

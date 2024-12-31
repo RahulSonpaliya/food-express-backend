@@ -1,6 +1,5 @@
 package com.example.model.request;
 
-import com.example.entity.User;
 import com.example.model.AccountType;
 import com.example.validation.ValidPhone;
 
@@ -14,17 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterUserRequest implements PhoneNumberRequest {
-	private Long id;
+public class SendOtpRequest {
 	@NotBlank(message = "{user.countryCode.required}")
 	private String countryCode;
 	@NotBlank(message = "{user.phoneNumber.required}")
 	private String phoneNumber;
 	@NotNull(message = "{user.accountType.required}")
 	private AccountType accountType;
-	private boolean otpVerified;
-	
-	public User toUserEntity() {
-		return new User(this.id, this.countryCode, this.phoneNumber, this.accountType, this.otpVerified);
-	}
 }

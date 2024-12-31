@@ -2,19 +2,19 @@ package com.example.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.model.request.RegisterUserRequest;
+import com.example.model.request.PhoneNumberRequest;
 import com.example.repository.AppRegionRepository;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class PhoneValidator implements ConstraintValidator<ValidPhone, RegisterUserRequest> {
+public class PhoneValidator implements ConstraintValidator<ValidPhone, PhoneNumberRequest> {
 
 	@Autowired
 	private AppRegionRepository appRegionRepository;
 	
     @Override
-    public boolean isValid(RegisterUserRequest request, ConstraintValidatorContext context) {
+    public boolean isValid(PhoneNumberRequest request, ConstraintValidatorContext context) {
         if (request.getCountryCode() == null || request.getPhoneNumber() == null) {
             return false;
         }
