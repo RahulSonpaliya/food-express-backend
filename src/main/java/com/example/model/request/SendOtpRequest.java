@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SendOtpRequest {
+public class SendOtpRequest implements PhoneNumberRequest {
 	@NotBlank(message = "{user.countryCode.required}")
 	private String countryCode;
 	@NotBlank(message = "{user.phoneNumber.required}")

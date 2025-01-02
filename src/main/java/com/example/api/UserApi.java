@@ -43,5 +43,10 @@ public class UserApi {
 	public ResponseEntity<BaseResponse> verifyOtp(@RequestBody @Valid VerifyOtpRequest request) throws JobPortalException {
 		return new ResponseEntity<>(userService.verifyOtp(request), HttpStatus.OK);
 	}
+
+	@PostMapping("/resendOtp")
+	public ResponseEntity<BaseResponse> sendOtp(@RequestBody @Valid SendOtpRequest request) throws JobPortalException {
+		return new ResponseEntity<>(userService.sendOtp(request), HttpStatus.OK);
+	}
 	
 }

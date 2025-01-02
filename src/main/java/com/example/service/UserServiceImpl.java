@@ -54,6 +54,8 @@ public class UserServiceImpl implements UserService {
 		var responseMsg = "Logged in successfully.";
 		if(!user.isOtpVerified()) {
 			responseMsg = "Login successful! Please verify your phone number to continue.";
+			var phoneNum = user.getCountryCode() + user.getPhoneNumber();
+			saveOTPEntity(phoneNum);
 		}
 		var loginResponse = new LoginResponse(responseMsg, true);
 		loginResponse.setOtpVerified(user.isOtpVerified());
@@ -64,12 +66,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public BaseResponse sendOtp(SendOtpRequest sendOtpRequest) throws JobPortalException {
 		var user = userRepository.findByCountryCodeAndPhoneNumberAndAccountType(sendOtpRequest.getCountryCode(), sendOtpRequest.getPhoneNumber(), sendOtpRequest.getAccountType()).orElseThrow(() -> new JobPortalException("INVALID_CREDENTIALS"));
-		String otpVal = Utilities.generateOTP();
 		var phoneNum = sendOtpRequest.getCountryCode() + sendOtpRequest.getPhoneNumber();
+		saveOTPEntity(phoneNum);
+		return new BaseResponse("OTP sent successfully", true);
+	}
+
+	private void saveOTPEntity(String phoneNum) {
+		String otpVal = Utilities.generateOTP();
 		var otp = new OTP(phoneNum, otpVal, LocalDateTime.now());
 		otpRepository.save(otp);
 		// TODO implement otp sending functionality using sms api i.e. Twillio
-		return new BaseResponse("OTP sent successfully", true);
 	}
 
 	@Override
