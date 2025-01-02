@@ -1,28 +1,32 @@
 package com.example.service;
 
-import java.time.LocalDateTime;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.entity.OTP;
+import com.example.entity.User;
 import com.example.exception.JobPortalException;
-import com.example.model.LoginDTO;
-import com.example.model.UserDTO;
+import com.example.model.request.LoginRequest;
 import com.example.model.request.RegisterUserRequest;
 import com.example.model.request.SendOtpRequest;
 import com.example.model.request.VerifyOtpRequest;
 import com.example.model.response.BaseResponse;
+import com.example.model.response.LoginResponse;
 import com.example.model.response.RegisterUserResponse;
 import com.example.repository.OTPRepository;
 import com.example.repository.UserRepository;
 import com.example.utility.Utilities;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private OTPRepository otpRepository;
@@ -33,8 +37,8 @@ public class UserServiceImpl implements UserService {
 		if(user1.isPresent()) {
 			throw new JobPortalException("USER_FOUND");
 		}
-		request.setId(Utilities.getNextSequence("users"));
-		var savedUser = userRepository.save(request.toUserEntity());
+		var userEntity = new User(Utilities.getNextSequence("users"), request.getCountryCode(), request.getPhoneNumber(), request.getName(), request.getEmailId(), passwordEncoder.encode(request.getPassword()), request.getAccountType(), false);
+		var savedUser = userRepository.save(userEntity);
 		var response = new RegisterUserResponse("User registered successfully", true);
 		response.setOtpVerified(savedUser.isOtpVerified());
 		response.setUserId(savedUser.getId());
@@ -42,9 +46,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO loginUser(LoginDTO loginDTO) throws JobPortalException {
-		var user = userRepository.findByCountryCodeAndPhoneNumberAndAccountType(loginDTO.getCountryCode(), loginDTO.getPhoneNumber(), loginDTO.getAccountType()).orElseThrow(() -> new JobPortalException("INVALID_CREDENTIALS"));
-		return user.toDTO();
+	public LoginResponse loginUser(LoginRequest loginRequest) throws JobPortalException {
+		var user = userRepository.findByCountryCodeAndPhoneNumberAndAccountType(loginRequest.getCountryCode(), loginRequest.getPhoneNumber(), loginRequest.getAccountType()).orElseThrow(() -> new JobPortalException("INVALID_CREDENTIALS"));
+		if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+			throw new JobPortalException("INVALID_CREDENTIALS");
+		}
+		var responseMsg = "Logged in successfully.";
+		if(!user.isOtpVerified()) {
+			responseMsg = "Login successful! Please verify your phone number to continue.";
+		}
+		var loginResponse = new LoginResponse(responseMsg, true);
+		loginResponse.setOtpVerified(user.isOtpVerified());
+		loginResponse.setUserId(user.getId());
+		return loginResponse;
 	}
 
 	@Override
