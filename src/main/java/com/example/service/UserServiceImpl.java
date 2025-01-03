@@ -53,13 +53,23 @@ public class UserServiceImpl implements UserService {
 		}
 		var responseMsg = "Logged in successfully.";
 		if(!user.isOtpVerified()) {
-			responseMsg = "Login successful! Please verify your phone number to continue.";
+			responseMsg = "Please verify your phone number to continue.";
 			var phoneNum = user.getCountryCode() + user.getPhoneNumber();
 			saveOTPEntity(phoneNum);
 		}
 		var loginResponse = new LoginResponse(responseMsg, true);
 		loginResponse.setOtpVerified(user.isOtpVerified());
 		loginResponse.setUserId(user.getId());
+		if(user.isOtpVerified()) {
+			var loggedInUserDTO = new LoginResponse.LoggedInUserDTO(
+					user.getId(),
+					user.getCountryCode(),
+					user.getPhoneNumber(),
+					user.getName(),
+					user.getEmailId()
+			);
+			loginResponse.setUser(loggedInUserDTO);
+		}
 		return loginResponse;
 	}
 
