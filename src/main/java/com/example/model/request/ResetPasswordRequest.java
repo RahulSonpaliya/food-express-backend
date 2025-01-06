@@ -3,8 +3,6 @@ package com.example.model.request;
 import com.example.model.AccountType;
 import com.example.validation.MatchPassword;
 import com.example.validation.ValidPhone;
-
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -17,16 +15,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterUserRequest implements PhoneNumberRequest, PasswordRequest {
+public class ResetPasswordRequest implements PhoneNumberRequest, PasswordRequest {
 	@NotBlank(message = "{user.countryCode.required}")
 	private String countryCode;
 	@NotBlank(message = "{user.phoneNumber.required}")
 	private String phoneNumber;
-	@NotBlank(message = "{user.name.required}")
-	private String name;
-	@NotBlank(message = "{user.emailId.required}")
-	@Email(message = "{user.emailId.invalid}")
-	private String emailId;
 	@NotBlank(message = "{user.password.required}")
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%?&])[A-Za-z\\d@$!%?&]{8,15}$", message = "{user.password.invalid}")
 	private String password;
