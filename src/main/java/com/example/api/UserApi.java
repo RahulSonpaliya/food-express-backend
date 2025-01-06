@@ -1,10 +1,7 @@
 package com.example.api;
 
 import com.example.exception.JobPortalException;
-import com.example.model.request.LoginRequest;
-import com.example.model.request.RegisterUserRequest;
-import com.example.model.request.SendOtpRequest;
-import com.example.model.request.VerifyOtpRequest;
+import com.example.model.request.*;
 import com.example.model.response.BaseResponse;
 import com.example.model.response.LoginResponse;
 import com.example.model.response.RegisterUserResponse;
@@ -47,6 +44,11 @@ public class UserApi {
 	@PostMapping("/resendOtp")
 	public ResponseEntity<BaseResponse> sendOtp(@RequestBody @Valid SendOtpRequest request) throws JobPortalException {
 		return new ResponseEntity<>(userService.sendOtp(request), HttpStatus.OK);
+	}
+
+	@PostMapping("/resetPassword")
+	public ResponseEntity<BaseResponse> resetPassword(@RequestBody @Valid ResetPasswordRequest request) throws JobPortalException {
+		return new ResponseEntity<>(userService.resetPassword(request), HttpStatus.OK);
 	}
 	
 }

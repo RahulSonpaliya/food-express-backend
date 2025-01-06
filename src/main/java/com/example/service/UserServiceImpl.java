@@ -3,10 +3,7 @@ package com.example.service;
 import com.example.entity.OTP;
 import com.example.entity.User;
 import com.example.exception.JobPortalException;
-import com.example.model.request.LoginRequest;
-import com.example.model.request.RegisterUserRequest;
-import com.example.model.request.SendOtpRequest;
-import com.example.model.request.VerifyOtpRequest;
+import com.example.model.request.*;
 import com.example.model.response.BaseResponse;
 import com.example.model.response.LoginResponse;
 import com.example.model.response.RegisterUserResponse;
@@ -100,6 +97,17 @@ public class UserServiceImpl implements UserService {
 		user.setOtpVerified(true);
 		userRepository.save(user);
 		return new BaseResponse("OTP verified successfully", true);
+	}
+
+	@Override
+	public BaseResponse resetPassword(ResetPasswordRequest request) throws JobPortalException {
+		var user = userRepository.findByCountryCodeAndPhoneNumberAndAccountType(request.getCountryCode(), request.getPhoneNumber(), request.getAccountType()).orElseThrow(() -> new JobPortalException("INVALID_CREDENTIALS"));
+		if(passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+			throw new JobPortalException("SAME_PASSWORD");
+		}
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
+		userRepository.save(user);
+		return new BaseResponse("Password reset successfully", true);
 	}
 
 }
