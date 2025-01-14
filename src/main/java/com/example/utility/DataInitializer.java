@@ -30,22 +30,21 @@ public class DataInitializer {
             appRegionRepository.save(india);
         }
         if (categoryRepository.count() == 0) {
-            final String downloadPath = "http://localhost:8080/categories/download/";
-            var food = new Category(1L, "Food", downloadPath + "restaurant.png", "Food & Bevereges", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+            var food = new Category(1L, "Food", "restaurant.png", "Food & Bevereges", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
             categoryRepository.save(food);
-            var fashion = new Category(2L, "Fashion", downloadPath + "dress.png", "Fashion", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+            var fashion = new Category(2L, "Fashion", "dress.png", "Fashion", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
             categoryRepository.save(fashion);
-            var electronics = new Category(3L, "Electronics", downloadPath + "responsive.png", "Electronics", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+            var electronics = new Category(3L, "Electronics", "responsive.png", "Electronics", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
             categoryRepository.save(electronics);
-            var groceries = new Category(4L, "Groceries", downloadPath + "grocery.png", "Groceries", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+            var groceries = new Category(4L, "Groceries", "grocery.png", "Groceries", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
             categoryRepository.save(groceries);
-            var medicines = new Category(5L, "Medicines", downloadPath + "drugs.png", "Medicines", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+            var medicines = new Category(5L, "Medicines", "drugs.png", "Medicines", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
             categoryRepository.save(medicines);
-            var cosmetics = new Category(6L, "Cosmetics", downloadPath + "makeup.png", "Cosmetics", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+            var cosmetics = new Category(6L, "Cosmetics", "makeup.png", "Cosmetics", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
             categoryRepository.save(cosmetics);
-            var petCare = new Category(7L, "Pet Care", downloadPath + "veterinary.png", "Pet Care", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+            var petCare = new Category(7L, "Pet Care", "veterinary.png", "Pet Care", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
             categoryRepository.save(petCare);
-            var books = new Category(8L, "Books", downloadPath + "books.png", "Books", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+            var books = new Category(8L, "Books", "books.png", "Books", CategoryStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
             categoryRepository.save(books);
         }
     }
