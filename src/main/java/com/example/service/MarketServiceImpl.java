@@ -1,7 +1,7 @@
 package com.example.service;
 
-import com.example.model.request.AllMarketsRequest;
-import com.example.model.response.AllMarketsResponse;
+import com.example.model.request.NearbyMarketsRequest;
+import com.example.model.response.NearbyMarketsResponse;
 import com.example.repository.MarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,9 @@ public class MarketServiceImpl implements MarketService {
     private MarketRepository marketRepository;
 
     @Override
-    public AllMarketsResponse getNearbyMarkets(AllMarketsRequest allMarketsRequest) {
-        var markets = marketRepository.findMarketsWithinRadius(Double.parseDouble(allMarketsRequest.getLatitude()), Double.parseDouble(allMarketsRequest.getLongitude()));
-        var response = new AllMarketsResponse("Success", true);
+    public NearbyMarketsResponse getNearbyMarkets(NearbyMarketsRequest nearbyMarketsRequest) {
+        var markets = marketRepository.findMarketsWithinRadius(Double.parseDouble(nearbyMarketsRequest.getLatitude()), Double.parseDouble(nearbyMarketsRequest.getLongitude()));
+        var response = new NearbyMarketsResponse("Success", true);
         response.setMarketList(markets);
         return response;
     }

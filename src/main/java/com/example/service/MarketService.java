@@ -1,8 +1,8 @@
 package com.example.service;
 
-import com.example.model.request.AllMarketsRequest;
-import com.example.model.response.AllMarketsResponse;
+import com.example.model.request.NearbyMarketsRequest;
+import com.example.model.response.NearbyMarketsResponse;
 
 public interface MarketService {
-    AllMarketsResponse getNearbyMarkets(AllMarketsRequest allMarketsRequest);
+    NearbyMarketsResponse getNearbyMarkets(NearbyMarketsRequest allMarketsRequest);
 }

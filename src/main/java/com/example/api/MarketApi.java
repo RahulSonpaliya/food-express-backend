@@ -1,7 +1,7 @@
 package com.example.api;
 
-import com.example.model.request.AllMarketsRequest;
-import com.example.model.response.AllMarketsResponse;
+import com.example.model.request.NearbyMarketsRequest;
+import com.example.model.response.NearbyMarketsResponse;
 import com.example.service.MarketService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class MarketApi {
     private MarketService marketService;
 
     @PostMapping("/nearby")
-    public ResponseEntity<AllMarketsResponse> getNearbyMarkets(@RequestBody @Valid AllMarketsRequest allMarketsRequest) {
+    public ResponseEntity<NearbyMarketsResponse> getNearbyMarkets(@RequestBody @Valid NearbyMarketsRequest allMarketsRequest) {
         return new ResponseEntity<>(marketService.getNearbyMarkets(allMarketsRequest), HttpStatus.OK);
     }
 }

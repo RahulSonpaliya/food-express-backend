@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AllMarketsRequest {
+public class NearbyMarketsRequest {
 	@NotBlank(message = "{market.latitude.required}")
 	private String latitude;
 	@NotBlank(message = "{market.longitude.required}")

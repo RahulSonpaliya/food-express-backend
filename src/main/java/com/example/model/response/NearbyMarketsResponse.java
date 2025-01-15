@@ -8,11 +8,11 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class AllMarketsResponse extends BaseResponse {
+public class NearbyMarketsResponse extends BaseResponse {
 
     private List<Market> marketList;
 
-    public AllMarketsResponse(String message, boolean success) {
+    public NearbyMarketsResponse(String message, boolean success) {
         super(message, success);
     }
 }
