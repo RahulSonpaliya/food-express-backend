@@ -11,4 +11,7 @@ import java.util.List;
 public interface MarketRepository extends MongoRepository<Market, Long> {
     @Query("{ 'location': { $near: { $geometry: { type: 'Point', coordinates: [?1, ?0] }, $maxDistance: 500 } } }")
     List<Market> findMarketsWithinRadius(double latitude, double longitude);
+
+    @Query("{ 'location': { $near: { $geometry: { type: 'Point', coordinates: [?1, ?0] }, $maxDistance: 500 } }, 'categoryId': ?2 }")
+    List<Market> findMarketsWithinRadiusAndCategory(double latitude, double longitude, Long categoryId);
 }

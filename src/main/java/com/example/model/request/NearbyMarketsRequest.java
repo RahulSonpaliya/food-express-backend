@@ -13,4 +13,5 @@ public class NearbyMarketsRequest {
 	private String latitude;
 	@NotBlank(message = "{market.longitude.required}")
 	private String longitude;
+	private Long categoryId;
 }
