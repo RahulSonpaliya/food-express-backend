@@ -30,7 +30,7 @@ public class MarketApi {
         return new ResponseEntity<>(marketService.getNearbyMarkets(allMarketsRequest), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/markets/{marketId}")
+    @GetMapping(value = "/detail/{marketId}")
     public ResponseEntity<MarketDetailResponse> getMarketDetail(@PathVariable(value = "marketId") String marketId, @RequestParam(value = "category_id", required = false, defaultValue = "-1") String categoryId) throws JobPortalException {
         var market = marketService.getMarketById(marketId);
         var products = productService.getProductsByMarketId(marketId);
