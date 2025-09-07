@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.entity.Market;
+import com.example.exception.JobPortalException;
 import com.example.model.request.NearbyMarketsRequest;
 import com.example.model.response.NearbyMarketsResponse;
 import com.example.repository.MarketRepository;
@@ -28,5 +29,10 @@ public class MarketServiceImpl implements MarketService {
         var response = new NearbyMarketsResponse("Success", true);
         response.setMarketList(markets);
         return response;
+    }
+
+    @Override
+    public Market getMarketById(String marketId) throws JobPortalException {
+        return marketRepository.findById(Long.parseLong(marketId)).orElseThrow(() -> new JobPortalException("MARKET_NOT_FOUND"));
     }
 }
