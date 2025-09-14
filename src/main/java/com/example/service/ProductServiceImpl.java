@@ -22,4 +22,9 @@ public class ProductServiceImpl implements ProductService {
             throw new JobPortalException("Error while fetching products for marketId: " + marketId);
         }
     }
+
+    @Override
+    public Product getProductById(String productId) throws JobPortalException {
+        return productRepository.findById(Long.parseLong(productId)).orElseThrow(() -> new JobPortalException("PRODUCT_NOT_FOUND"));
+    }
 }
