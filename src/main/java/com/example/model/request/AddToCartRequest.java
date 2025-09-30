@@ -19,8 +19,6 @@ public class AddToCartRequest {
     @Min(value = 1, message = "{productId.invalid}")
     private Long productId;
 
-    @NotNull(message = "{variantId.invalid}")
-    @Min(value = 1, message = "{variantId.invalid}")
     private Long variantId;
 }
 

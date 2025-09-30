@@ -28,4 +28,15 @@ public class CartServiceImpl implements CartService {
         var savedCart = cartRepository.save(cart);
         return savedCart.getId();
     }
+
+    @Override
+    public void updateCart(long cartId, AddToCartRequest addToCartRequest) throws JobPortalException {
+        var cart = cartRepository.findById(cartId).orElseThrow(() -> new JobPortalException("CART_NOT_FOUND"));
+        for (CartItem item : cart.getItems()) {
+            if (item.getProductId().equals(addToCartRequest.getProductId())){
+                item.setQuantity(addToCartRequest.getQuantity());
+            }
+        }
+        cartRepository.save(cart);
+    }
 }

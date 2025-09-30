@@ -3,6 +3,7 @@ package com.example.api;
 import com.example.exception.JobPortalException;
 import com.example.model.request.AddToCartRequest;
 import com.example.model.response.AddToCartResponse;
+import com.example.model.response.BaseResponse;
 import com.example.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,12 @@ public class CartApi {
         AddToCartResponse addToCartSuccess = new AddToCartResponse("Add to cart success", true);
         addToCartSuccess.setCartId(cartId);
         return new ResponseEntity<>(addToCartSuccess, HttpStatus.OK);
+    }
+
+    @PostMapping("/update/{cartId}")
+    public ResponseEntity<BaseResponse> updateCart(@PathVariable(value = "cartId") String cartId, @RequestBody @Valid AddToCartRequest addToCartRequest) throws JobPortalException {
+        cartService.updateCart(Long.parseLong(cartId), addToCartRequest);
+        return new ResponseEntity<>(new BaseResponse("Cart Updated", true), HttpStatus.OK);
     }
 
 }
