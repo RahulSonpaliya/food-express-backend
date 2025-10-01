@@ -39,4 +39,10 @@ public class CartServiceImpl implements CartService {
         }
         cartRepository.save(cart);
     }
+
+    @Override
+    public void deleteCart(long cartId) throws JobPortalException {
+        var cart = cartRepository.findById(cartId).orElseThrow(() -> new JobPortalException("CART_NOT_FOUND"));
+        cartRepository.delete(cart);
+    }
 }

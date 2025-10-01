@@ -7,4 +7,6 @@ public interface CartService {
     Long addToCart(Long userId, AddToCartRequest request) throws JobPortalException;
 
     void updateCart(long cartId, AddToCartRequest addToCartRequest) throws JobPortalException;
+
+    void deleteCart(long cartId) throws JobPortalException;
 }

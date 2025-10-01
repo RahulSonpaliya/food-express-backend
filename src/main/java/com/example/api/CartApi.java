@@ -33,4 +33,10 @@ public class CartApi {
         return new ResponseEntity<>(new BaseResponse("Cart Updated", true), HttpStatus.OK);
     }
 
+    @PostMapping("/delete/{cartId}")
+    public ResponseEntity<BaseResponse> deleteCart(@PathVariable(value = "cartId") String cartId) throws JobPortalException {
+        cartService.deleteCart(Long.parseLong(cartId));
+        return new ResponseEntity<>(new BaseResponse("Cart Deleted", true), HttpStatus.OK);
+    }
+
 }
