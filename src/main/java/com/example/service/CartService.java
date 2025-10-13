@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.exception.JobPortalException;
 import com.example.model.request.AddToCartRequest;
+import com.example.model.response.GetCartResponse;
 
 public interface CartService {
     Long addToCart(Long userId, AddToCartRequest request) throws JobPortalException;
@@ -9,4 +10,6 @@ public interface CartService {
     void updateCart(long cartId, AddToCartRequest addToCartRequest) throws JobPortalException;
 
     void deleteCart(long cartId) throws JobPortalException;
+
+    GetCartResponse getCart(Long userId) throws JobPortalException;
 }

@@ -4,6 +4,7 @@ import com.example.entity.Cart;
 import com.example.entity.CartItem;
 import com.example.exception.JobPortalException;
 import com.example.model.request.AddToCartRequest;
+import com.example.model.response.GetCartResponse;
 import com.example.repository.CartRepository;
 import com.example.utility.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,11 @@ public class CartServiceImpl implements CartService {
     public void deleteCart(long cartId) throws JobPortalException {
         var cart = cartRepository.findById(cartId).orElseThrow(() -> new JobPortalException("CART_NOT_FOUND"));
         cartRepository.delete(cart);
+    }
+
+    @Override
+    public GetCartResponse getCart(Long userId) throws JobPortalException {
+        var cart = cartRepository.findByUserId(userId).orElseThrow(() -> new JobPortalException("CART_NOT_FOUND"));
+        return null;
     }
 }
