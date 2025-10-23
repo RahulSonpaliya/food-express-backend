@@ -21,11 +21,18 @@ public class CartServiceImpl implements CartService {
     @Override
     public Long addToCart(Long userId, AddToCartRequest request) throws JobPortalException {
         var cart = new Cart();
-        cart.setId(Utilities.getNextSequence("carts"));
-        cart.setUserId(userId);
-        var cartItems = new ArrayList<CartItem>();
-        cartItems.add(new CartItem(request.getQuantity(), request.getProductId(), request.getVariantId()));
-        cart.setItems(cartItems);
+        CartItem item = new CartItem(request.getQuantity(), request.getProductId(), request.getVariantId());
+        var cartCheck = cartRepository.findByUserId(userId);
+        if(cartCheck.isPresent()) {
+            cart = cartCheck.get();
+            cart.getItems().add(item);
+        } else {
+            cart.setId(Utilities.getNextSequence("carts"));
+            cart.setUserId(userId);
+            var cartItems = new ArrayList<CartItem>();
+            cartItems.add(item);
+            cart.setItems(cartItems);
+        }
         var savedCart = cartRepository.save(cart);
         return savedCart.getId();
     }
