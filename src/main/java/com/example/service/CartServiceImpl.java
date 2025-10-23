@@ -4,6 +4,7 @@ import com.example.entity.Cart;
 import com.example.entity.CartItem;
 import com.example.exception.JobPortalException;
 import com.example.model.request.AddToCartRequest;
+import com.example.model.request.UpdateCartRequest;
 import com.example.model.response.GetCartResponse;
 import com.example.repository.CartRepository;
 import com.example.utility.Utilities;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -38,14 +40,21 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void updateCart(long cartId, AddToCartRequest addToCartRequest) throws JobPortalException {
+    public void updateCart(long cartId, UpdateCartRequest updateCartRequest) throws JobPortalException {
         var cart = cartRepository.findById(cartId).orElseThrow(() -> new JobPortalException("CART_NOT_FOUND"));
-        for (CartItem item : cart.getItems()) {
-            if (item.getProductId().equals(addToCartRequest.getProductId())){
-                item.setQuantity(addToCartRequest.getQuantity());
+        if(updateCartRequest.getQuantity() > 0) {
+            for (CartItem item : cart.getItems()) {
+                if (item.getProductId().equals(updateCartRequest.getProductId())){
+                    item.setQuantity(updateCartRequest.getQuantity());
+                }
             }
+        } else {
+            cart.getItems().removeIf(e -> Objects.equals(e.getProductId(), updateCartRequest.getProductId()));
         }
         cartRepository.save(cart);
+        if(cart.getItems().isEmpty()) {
+            deleteCart(cartId);
+        }
     }
 
     @Override

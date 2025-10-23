@@ -2,8 +2,10 @@ package com.example.api;
 
 import com.example.exception.JobPortalException;
 import com.example.model.request.AddToCartRequest;
+import com.example.model.request.UpdateCartRequest;
 import com.example.model.response.AddToCartResponse;
 import com.example.model.response.BaseResponse;
+import com.example.model.response.GetCartResponse;
 import com.example.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,8 @@ public class CartApi {
     }
 
     @PostMapping("/update/{cartId}")
-    public ResponseEntity<BaseResponse> updateCart(@PathVariable(value = "cartId") String cartId, @RequestBody @Valid AddToCartRequest addToCartRequest) throws JobPortalException {
-        cartService.updateCart(Long.parseLong(cartId), addToCartRequest);
+    public ResponseEntity<BaseResponse> updateCart(@PathVariable(value = "cartId") String cartId, @RequestBody @Valid UpdateCartRequest updateCartRequest) throws JobPortalException {
+        cartService.updateCart(Long.parseLong(cartId), updateCartRequest);
         return new ResponseEntity<>(new BaseResponse("Cart Updated", true), HttpStatus.OK);
     }
 
@@ -37,6 +39,11 @@ public class CartApi {
     public ResponseEntity<BaseResponse> deleteCart(@PathVariable(value = "cartId") String cartId) throws JobPortalException {
         cartService.deleteCart(Long.parseLong(cartId));
         return new ResponseEntity<>(new BaseResponse("Cart Deleted", true), HttpStatus.OK);
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<GetCartResponse> getCart(@RequestHeader("User-Id") String userId) {
+        return new ResponseEntity<>(new GetCartResponse("Cart get success", true), HttpStatus.OK);
     }
 
 }
