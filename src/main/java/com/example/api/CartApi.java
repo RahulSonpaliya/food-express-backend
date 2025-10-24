@@ -42,8 +42,8 @@ public class CartApi {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<GetCartResponse> getCart(@RequestHeader("User-Id") String userId) {
-        return new ResponseEntity<>(new GetCartResponse("Cart get success", true), HttpStatus.OK);
+    public ResponseEntity<GetCartResponse> getCart(@RequestHeader("User-Id") String userId) throws JobPortalException {
+        return new ResponseEntity<>(cartService.getCart(Long.parseLong(userId)), HttpStatus.OK);
     }
 
 }

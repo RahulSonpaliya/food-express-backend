@@ -7,6 +7,8 @@ import com.example.model.request.AddToCartRequest;
 import com.example.model.request.UpdateCartRequest;
 import com.example.model.response.GetCartResponse;
 import com.example.repository.CartRepository;
+import com.example.repository.MarketRepository;
+import com.example.repository.ProductRepository;
 import com.example.utility.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,12 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private MarketRepository marketRepository;
 
     @Override
     public Long addToCart(Long userId, AddToCartRequest request) throws JobPortalException {
@@ -66,6 +74,18 @@ public class CartServiceImpl implements CartService {
     @Override
     public GetCartResponse getCart(Long userId) throws JobPortalException {
         var cart = cartRepository.findByUserId(userId).orElseThrow(() -> new JobPortalException("CART_NOT_FOUND"));
-        return null;
+        var response = new GetCartResponse("Get cart success", true);
+        response.setCartId(cart.getId());
+        var products = cart.getItems().stream().map(item -> {
+            var product = productRepository.findById(item.getProductId()).get();
+            product.setQty(item.getQuantity().toString());
+            if(response.getVendorDetail() == null) {
+                response.setVendorDetail(marketRepository.findById(product.getMarketId()).get());
+            }
+            return product;
+        }).toList();
+        response.setProducts(products);
+        response.setDeliveryPrice(0);
+        return response;
     }
 }
